@@ -80,8 +80,14 @@ class ViewFactor(object):
         self.raycast_x = map(lambda r: [None] * self.ray_num, [None] * self.bld_num)
         self.raycast_y = map(lambda r: [None] * self.ray_num, [None] * self.bld_num)
         self.raycast_z = map(lambda r: [None] * self.ray_num, [None] * self.bld_num)
-        #self.header_lst = []
         self.ray_mtx = []
+
+        self.header_lst = []
+        for ri in xrange(self.ray_num):
+            hstr = "RAY_{b}_".format(b=ri)
+            self.header_lst.extend([hstr+"dist",hstr+"x",hstr+"y",hstr+"z"])
+        print len(self.header_lst)
+        print self.header_lst
         for i in xrange(self.bld_num):
             self.bld_lst = []
             for j in xrange(self.ray_num):
@@ -89,7 +95,6 @@ class ViewFactor(object):
                 x = self.ray_int_nested[i][j][0]
                 y = self.ray_int_nested[i][j][1]
                 z = self.ray_int_nested[i][j][2]
-                #self.header = "BLD_{a}_RAY_{b}".format(a=i,b=j)
 
                 self.bld_lst.extend([d,x,y,z])
 
@@ -98,7 +103,6 @@ class ViewFactor(object):
             self.ray_mtx.append(self.bld_lst)
     def pythonListTGhDataTree(self,pythonList):
         """ Converts a  nested Python list to a GH datatree """
-
         # Create GH datatree
         dataTree = gh.DataTree[object]()
 
@@ -113,9 +117,9 @@ vf.process_raw_inputs(sphere_tree_in, bound_srf_lst_in, cpt_lst_in)
 vf.ray_cast()
 vf.generate_viewfactor_matrix()
 
-
+header_lst = vf.header_lst
 ray_tree = vf.pythonListTGhDataTree(vf.ray_mtx)
-
+#header_tree
 print len(vf.ray_mtx)
 print len(vf.bld_lst)
 
