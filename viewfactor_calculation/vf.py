@@ -26,8 +26,6 @@ class ViewFactor(object):
             branchList = sphere_tree_in.Branch(i)
             self.sphere_nested.append(branchList)
 
-
-
         # convert tree to nested list of bound srfs
         for i in range(bound_srf_lst_in.BranchCount):
             branchList = bound_srf_lst_in.Branch(i)
@@ -83,15 +81,23 @@ class ViewFactor(object):
         for i in xrange(self.bld_num):
             for j in xrange(self.ray_num):
                 self.raycast_distance[i][j] = self.ray_dist_nested[i][j]
-                self.raycast_pt_x = self.ray_int_nested[i][j][0]
-                self.raycast_pt_y = self.ray_int_nested[i][j][1]
-                self.raycast_pt_z = self.ray_int_nested[i][j][2]
-                self.ray_dist_nested[i][j]
+                self.raycast_x[i][j] = self.ray_int_nested[i][j][0]
+                self.raycast_y[i][j] = self.ray_int_nested[i][j][1]
+                self.raycast_z[i][j] = self.ray_int_nested[i][j][2]
+                #self.ray_dist_nested[i][j]
+                #self.raycast_distance[i][j]
 
 vf = ViewFactor()
 vf.process_raw_inputs(sphere_tree_in, bound_srf_lst_in, cpt_lst_in)
 vf.ray_cast()
+vf.generate_viewfactor_matrix()
+
+
+ray_dist_mtx = vf.raycast_distance
+ray_pt_x_mtx = vf.raycast_x
+ray_pt_y_mtx = vf.raycast_y
+ray_pt_z_mtx = vf.raycast_z
 
 #sphere_out = vf.sphere_nested
 #cpt_out = vf.cpt
-cpt_out = reduce(lambda x,y: x+y, vf.ray_int_nested)
+ray_out = reduce(lambda x,y: x+y, vf.ray_int_nested)
