@@ -73,31 +73,40 @@ class ViewFactor(object):
             self.ray_int_nested.append(raypts)
         #print len(self.ray_int_nested)
     def generate_viewfactor_matrix(self):
+        # flip the matrix
         self.raycast_distance = map(lambda r: [None] * self.ray_num, [None] * self.bld_num)
 
         self.raycast_x = map(lambda r: [None] * self.ray_num, [None] * self.bld_num)
         self.raycast_y = map(lambda r: [None] * self.ray_num, [None] * self.bld_num)
         self.raycast_z = map(lambda r: [None] * self.ray_num, [None] * self.bld_num)
+        #self.header_lst = []
+        self.ray_mtx = []
         for i in xrange(self.bld_num):
+            self.bld_lst = []
             for j in xrange(self.ray_num):
-                self.raycast_distance[i][j] = self.ray_dist_nested[i][j]
-                self.raycast_x[i][j] = self.ray_int_nested[i][j][0]
-                self.raycast_y[i][j] = self.ray_int_nested[i][j][1]
-                self.raycast_z[i][j] = self.ray_int_nested[i][j][2]
+                d = self.ray_dist_nested[i][j]
+                x = self.ray_int_nested[i][j][0]
+                y = self.ray_int_nested[i][j][1]
+                z = self.ray_int_nested[i][j][2]
+                #self.header = "BLD_{a}_RAY_{b}".format(a=i,b=j)
+
+                self.bld_lst.extend([d,x,y,z])
+
                 #self.ray_dist_nested[i][j]
                 #self.raycast_distance[i][j]
+            self.ray_mtx.append(self.bld_lst)
 
 vf = ViewFactor()
 vf.process_raw_inputs(sphere_tree_in, bound_srf_lst_in, cpt_lst_in)
 vf.ray_cast()
 vf.generate_viewfactor_matrix()
-
-
-ray_dist_mtx = vf.raycast_distance
-ray_pt_x_mtx = vf.raycast_x
-ray_pt_y_mtx = vf.raycast_y
-ray_pt_z_mtx = vf.raycast_z
+print len(vf.ray_mtx)
+print len(vf.bld_lst)
 
 #sphere_out = vf.sphere_nested
 #cpt_out = vf.cpt
+
+
+ray_mtx = vf.ray_mtx
+
 ray_out = reduce(lambda x,y: x+y, vf.ray_int_nested)
