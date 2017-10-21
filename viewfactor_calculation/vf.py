@@ -1,7 +1,8 @@
 import rhinoscriptsyntax as rs
 import Rhino as rc
 import scriptcontext as sc
-
+#import ghpythonlib as gh
+import Grasshopper as gh
 
 """ Calculate View Factor
 
@@ -95,11 +96,26 @@ class ViewFactor(object):
                 #self.ray_dist_nested[i][j]
                 #self.raycast_distance[i][j]
             self.ray_mtx.append(self.bld_lst)
+    def pythonListTGhDataTree(self,pythonList):
+        """ Converts a  nested Python list to a GH datatree """
 
+        # Create GH datatree
+        dataTree = gh.DataTree[object]()
+
+        # Add pythonlist sub lists to dataTree
+        for i,l in enumerate(pythonList):
+            for v in l:
+                dataTree.Add(v,gh.Kernel.Data.GH_Path(i))
+
+        return dataTree
 vf = ViewFactor()
 vf.process_raw_inputs(sphere_tree_in, bound_srf_lst_in, cpt_lst_in)
 vf.ray_cast()
 vf.generate_viewfactor_matrix()
+
+
+ray_tree = vf.pythonListTGhDataTree(vf.ray_mtx)
+
 print len(vf.ray_mtx)
 print len(vf.bld_lst)
 
@@ -107,6 +123,6 @@ print len(vf.bld_lst)
 #cpt_out = vf.cpt
 
 
-ray_mtx = vf.ray_mtx
+
 
 ray_out = reduce(lambda x,y: x+y, vf.ray_int_nested)
