@@ -93,8 +93,6 @@ norm_data = pd.concat([norm_data, normalized], axis=1)
 #     norm_num = pd.Series(normalized, name=col+"_norm")
 #     norm_data = pd.concat([norm_data, norm_num], axis=1)
 
-print normalized
-
 ###########
 # Merging #
 ###########
@@ -121,32 +119,6 @@ print geo_df.head()
 # imputer_object.fit(numeric_features)
 # numeric_features = pd.DataFrame(imputer_object.transform(numeric_features),
 #                                     columns = numeric_features.columns)
-
-######################
-# Training + Testing #
-######################
-
-# # separating response variable from your explanatory variables
-# response_header = ['Shape']
-# response_series = georaw_df[response_header]
-#
-# explanatory_header = ['Area', 'Volume', 'centroid x', 'centroid y ', \
-#     'centroid z', 'BB_Height', 'BB_Width', 'BB_Depth', 'low_slice_length', \
-#     'mid_slice_length', 'upper_slice_length']
-# explanatory_variables = georaw_df[explanatory_header]
-#
-# # setting up testing and training sets
-# # hold out indices
-# holdout_num = round(len(geo_df.index) * CROSS_VALIDATION_AMOUNT, 0)
-#
-# test_indices = np.random.choice(geo_df.index, holdout_num, replace = False )
-# train_indices = geo_df.index[~geo_df.index.isin(test_indices)]
-#
-# response_train = response_series.ix[train_indices,]
-# explanatory_train = explanatory_variables.ix[train_indices,]
-#
-# response_test = response_series.ix[test_indices,]
-# explanatory_test = explanatory_variables.ix[test_indices,]
 
 #####################
 # KMeans Clustering #
