@@ -61,7 +61,7 @@ class doe2bin(object):
             if not eui_not_match:
                 return eui
             else:
-                return -1
+                return 200.0
 
         # Make dir path to epw file
         realCityDataPath = os.path.join(self.DIR_UP_PATH,"resources","MN_Meta_Subset.csv")
@@ -91,14 +91,12 @@ class doe2bin(object):
             realtype_ = realbuild.doe_type.upper().strip()
 
             #TODO: change \ to better delimeter in csv
-            #TODO: swap order of csv for fractional multiplication 
-            if "pppp" in realtype_:
-                realtypeslst = realtype_.split("pppp")
-                #helper_match_type
-                eui_1 = realtypeslst[0]
-                eui_2 = realtypeslst[1]
-
-                realbld.eui = eui_1 * 0.25 + eui_2 * 0.75
+            #TODO: swap order of csv for fractional multiplication
+            if ":" in realtype_:
+                realtypeslst = realtype_.split(":")
+                eui1 = helper_match_type(realtypeslst[0])
+                eui2 = helper_match_type(realtypeslst[1])
+                realbuild.eui = eui1 * 0.75 + eui2 * 0.25
             else:
                 realbuild.eui = helper_match_type(realtype_)
 
@@ -124,13 +122,12 @@ class doe2bin(object):
 
         rb_csv_path = os.path.join(self.DIR_UP_PATH,"csv","eui_bld.csv")
         cf = open(rb_csv_path,"w")
-        cf.write("BIN,KWH/M2,KWH,TYPE\n")
+        cf.write("BIN,KWH/M2,TYPE\n")
         for i in xrange(len(self.realbuildlst)):
             rb = self.realbuildlst[i]
-            cf.write("{a},{b},{c},{d}\n".format(
+            cf.write("{a},{b},{d}\n".format(
                 a = rb.bin,
                 b = rb.eui,
-                c = rb.total_energy,
                 d = rb.doe_type))
 
         cf.close()
