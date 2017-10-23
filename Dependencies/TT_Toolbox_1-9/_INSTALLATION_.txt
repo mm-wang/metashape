@@ -1,0 +1,8 @@
+1. Right click the .zip file you downloaded from Food4Rhino > properties > unblock > apply > OK.  Extract the zip file to a folder on local hard drive - your desktop, for example.
+2. Move or copy the folder 'TT Toolbox' to your local grasshopper components folder: C:\Users\[USERNAME]\AppData\Roaming\Grasshopper\Libraries
+	-Type "GrasshopperFolders" in Rhino command line
+	-Select "Components"
+3. Start Rhino and Grasshopper and look for the TT Toolbox tab in the Grasshopper Ribbon.
+4. Enjoy!
+
+
