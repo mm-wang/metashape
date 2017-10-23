@@ -1,3 +1,5 @@
+![](https://github.com/mm-wang/metashape/blob/master/Documentation/5%20Live%20Demo/ItWorks%2001b.gif)
+
 # metashape
 geometry clustering of shapes based on trained features
 
